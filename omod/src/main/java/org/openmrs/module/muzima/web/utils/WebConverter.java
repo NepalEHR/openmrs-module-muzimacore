@@ -229,7 +229,7 @@ public class WebConverter {
         try {
             returnedString = JsonPath.read(jsonObject, path);
         } catch (Exception e) {
-            logger.error("Unable to read string value with path: " + path);
+            logger.error("Unable to read string value with path: " + path + " from: " + String.valueOf(jsonObject));
         }
         return returnedString;
     }
@@ -277,7 +277,6 @@ public class WebConverter {
         Map<String, Object> map = new HashMap<String, Object>();
         if (location != null) {
             map.put("uuid", location.getUuid());
-            map.put("id",location.getId());
             map.put("name", location.getName());
         }
         return map;

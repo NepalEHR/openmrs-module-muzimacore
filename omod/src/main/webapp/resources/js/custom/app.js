@@ -1,4 +1,4 @@
-var muzimaCoreModule = angular.module('muzimaCoreModule', ['ui.bootstrap', 'ngRoute', 'ngSanitize', 'filters', 'muzimafilters' ,'angular-tour', 'pascalprecht.translate','monospaced.qrcode']);
+var muzimaCoreModule = angular.module('muzimaCoreModule', ['ui.bootstrap', 'ngRoute', 'ngSanitize', 'filters', 'muzimafilters' ,'angular-tour', 'pascalprecht.translate']);
 
 muzimaCoreModule.
     config(['$routeProvider', '$compileProvider', '$translateProvider', function ($routeProvider, $compileProvider, $translateProvider) {
@@ -443,11 +443,7 @@ muzimaCoreModule.factory('$cohortDefinitionService', function ($http) {
 
     var processCohortDefinition = function (uuid){
         return $http.post("processCohortDefinition.json",{"uuid": uuid});
-    };
-
-    var getAllLocations = function(search) {
-        return $http.get("getAllLocations.json");
-    };
+    }
 
     return {
 
@@ -458,8 +454,7 @@ muzimaCoreModule.factory('$cohortDefinitionService', function ($http) {
         getAllCohorts:getAllCohorts,
         getAllCohortsWithoutDefinition:getAllCohortsWithoutDefinition,
         deleteCohortDefinition : deleteCohortDefinition,
-        processCohortDefinition : processCohortDefinition,
-        getAllLocations : getAllLocations
+        processCohortDefinition : processCohortDefinition
     }
 });
 

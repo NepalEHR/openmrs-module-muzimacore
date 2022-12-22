@@ -135,7 +135,7 @@ public class HibernateMuzimaFormDAO implements MuzimaFormDAO {
         if(StringUtils.isNotEmpty(search)){
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.ilike("name", search, MatchMode.ANYWHERE));
-            criteria1.add(disjunction);
+            criteria.add(disjunction);
         }
 
         return criteria1.list();

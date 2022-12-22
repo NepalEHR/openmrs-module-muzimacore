@@ -5,7 +5,7 @@
 
     <groupId>org.openmrs.module</groupId>
     <artifactId>muzimacore</artifactId>
-    <version>1.8.1-SNAPSHOT</version>
+    <version>1.8.0</version>
     <packaging>pom</packaging>
     <name>Muzima Core Module</name>
     <description>Muzima module providing core services to the Muzima mobile application.</description>
@@ -240,7 +240,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.13.1</version>
         </dependency>
     </dependencies>
 
@@ -343,12 +343,12 @@
         <repository>
             <id>openmrs-repo</id>
             <name>OpenMRS Nexus Repository</name>
-            <url>https://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
+            <url>http://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
         </repository>
         <repository>
             <id>spring-test-repo</id>
             <name>Spring Test Repository</name>
-            <url>https://repo.springsource.org/libs-snapshot</url>
+            <url>http://repo.springsource.org/libs-snapshot</url>
         </repository>
     </repositories>
 
@@ -356,7 +356,7 @@
         <pluginRepository>
             <id>openmrs-repo</id>
             <name>OpenMRS Nexus Repository</name>
-            <url>https://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
+            <url>http://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>

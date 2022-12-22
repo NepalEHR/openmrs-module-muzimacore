@@ -226,12 +226,11 @@ function ErrorCtrl($scope, $routeParams, $location, $data) {
     });
 
     $scope.delete = function () {
-        var removeReason = $('#removeReason').val();
-        if(!removeReason){
+        if(!$scope.removeReason){
              $scope.removeReasonError = true;
         }else{
             var uuidList = [$scope.uuid];
-            $data.deleteErrors(uuidList, removeReason).
+            $data.deleteErrors(uuidList, $scope.removeReason).
             then(function () {
                 $location.path("/errors");
             });
@@ -347,12 +346,11 @@ function ErrorsCtrl($scope, $location, $data, $localeService, $translate) {
                 uuidList.push(key);
             }
         });
-        var removeReason = $('#removeReason').val();
-        if(!removeReason){
+        if(!$scope.removeReason){
              $scope.removeReasonError = true;
              $('#wait').hide();
         }else{
-            $data.deleteErrors(uuidList, removeReason).
+            $data.deleteErrors(uuidList, $scope.removeReason).
             then(function () {
                 $data.getErrors($scope.search, $scope.currentPage, $scope.pageSize).
                 then(function (response) {

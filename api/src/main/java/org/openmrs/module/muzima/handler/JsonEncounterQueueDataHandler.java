@@ -92,8 +92,6 @@ public class JsonEncounterQueueDataHandler implements QueueDataHandler {
 
     private Encounter encounter;
 
-    private User editingUser;
-
     private String deviceTimeZone;
 
     /**
@@ -108,7 +106,6 @@ public class JsonEncounterQueueDataHandler implements QueueDataHandler {
             log.info("Processing encounter form data: " + queueData.getUuid());
 
             encounter = new Encounter();
-            editingUser = new User();
             String payload = queueData.getPayload();
             String encounterPayload = payload.toString();
             deviceTimeZone = JsonUtils.readAsString(encounterPayload, "$['encounter']['encounter.device_time_zone']");
@@ -134,8 +131,6 @@ public class JsonEncounterQueueDataHandler implements QueueDataHandler {
             //Object encounterObject = JsonUtils.readAsObject(queueData.getPayload(), "$['encounter']");
             if(!foundEncounterToEdit){
                 processEncounter(encounter, payload, encounterFormUuidToAddObs);
-            } else {
-               setEditingProvider(payload);
             }
 
             Object obsObject = JsonUtils.readAsObject(queueData.getPayload(), "$['observation']");
@@ -309,7 +304,7 @@ public class JsonEncounterQueueDataHandler implements QueueDataHandler {
                                 parentObs.addGroupMember(obsGroup);
                             }
                         }else{
-                            createObs(encounter, parentObs, concept, childObsObject, editObs);
+                            createObs(encounter, parentObs, concept, childObsObject);
                         }
 
                     } else {
@@ -317,10 +312,10 @@ public class JsonEncounterQueueDataHandler implements QueueDataHandler {
                         if (valueObject instanceof JSONArray) {
                             JSONArray jsonArray = (JSONArray) valueObject;
                             for (Object arrayElement : jsonArray) {
-                                createObs(encounter, parentObs, concept, arrayElement, editObs);
+                                createObs(encounter, parentObs, concept, arrayElement);
                             }
                         } else {
-                            createObs(encounter, parentObs, concept, valueObject, editObs);
+                            createObs(encounter, parentObs, concept, valueObject);
                         }
                     }
                 }
@@ -331,7 +326,7 @@ public class JsonEncounterQueueDataHandler implements QueueDataHandler {
         }else {
             String[] conceptElements = StringUtils.split(obsObject.toString(), "\\^");
             if (conceptElements.length == 3)
-                createObs(encounter, parentObs, parentObs.getConcept(), obsObject, editObs);
+                createObs(encounter, parentObs, parentObs.getConcept(), obsObject);
         }
     }
 
@@ -342,15 +337,10 @@ public class JsonEncounterQueueDataHandler implements QueueDataHandler {
      * @param concept - Concept
      * @param o - java.lang.Object
      */
-    private void createObs(final Encounter encounter, final Obs parentObs, final Concept concept, final Object o, boolean editObs) {
+    private void createObs(final Encounter encounter, final Obs parentObs, final Concept concept, final Object o) {
         String value=null;
         Obs obs = new Obs();
         obs.setConcept(concept);
-        if(editObs) {
-            obs.setCreator(editingUser);
-        }else{
-            obs.setCreator(encounter.getCreator());
-        }
 
         //check and parse if obs_value / obs_datetime object
         if(o instanceof LinkedHashMap){
@@ -679,20 +669,5 @@ public class JsonEncounterQueueDataHandler implements QueueDataHandler {
         }
 
         return defaultMuzimaVisitTypeSetting;
-    }
-
-    public void setEditingProvider(String payload){
-        String userString = JsonUtils.readAsString(payload, "$['encounter']['encounter.user_system_id']");
-        String providerString = JsonUtils.readAsString(payload, "$['encounter']['encounter.provider_id']");
-        User user = Context.getUserService().getUserByUsername(userString);
-
-        if(user == null ){
-            user = Context.getUserService().getUserByUsername(providerString);
-        }
-        if(user == null) {
-            queueProcessorException.addException(new Exception("Unable to find user using the User Id: " + userString + " or Provider Id: "+providerString));
-        } else {
-            editingUser = user;
-        }
     }
 }

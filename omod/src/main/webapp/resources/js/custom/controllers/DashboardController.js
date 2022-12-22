@@ -22,8 +22,6 @@ function DashboardCtrl($scope, $location, $dashboardService) {
     $scope.registrationError = 0;
     $scope.relationshipError = 0;
     $scope.individualObsError = 0;
-    var currentURL = $location.absUrl();
-    $scope.baseURL = currentURL.substr(0, currentURL.indexOf('/module'));
 
     $dashboardService.getSetupConfigCount().
     then(function (response) {

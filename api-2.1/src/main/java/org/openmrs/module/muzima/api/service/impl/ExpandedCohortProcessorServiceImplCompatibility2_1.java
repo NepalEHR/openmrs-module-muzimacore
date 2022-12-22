@@ -57,7 +57,7 @@ public class ExpandedCohortProcessorServiceImplCompatibility2_1 implements Expan
             for (CohortMembership newMember : newMembers) {
                 boolean isAlreadyMember = false;
                 for (CohortMembership activeMember : savedCohort.getActiveMemberships()) {
-                    if (activeMember.getPatientId().equals(newMember.getPatientId())) {
+                    if (activeMember.getPatientId() == newMember.getPatientId()) {
                         isAlreadyMember = true;
                     }
                 }
@@ -80,10 +80,9 @@ public class ExpandedCohortProcessorServiceImplCompatibility2_1 implements Expan
         List<Integer> removedMembersList = new ArrayList<Integer>();
         if (cohortDefinitionData.getIsMemberRemovalEnabled() == true) {
             for (CohortMembership activeMember : savedCohort.getActiveMemberships()) {
-
                 boolean isInNewMemberList = false;
                 for (CohortMembership newMember : newMembers) {
-                    if (activeMember.getPatientId().equals(newMember.getPatientId())) {
+                    if (activeMember.getPatientId() == newMember.getPatientId()) {
                         isInNewMemberList = true;
                     }
                 }

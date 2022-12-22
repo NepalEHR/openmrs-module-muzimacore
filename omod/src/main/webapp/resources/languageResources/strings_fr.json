@@ -336,8 +336,5 @@
   "pagination_last": "Dernier",
   "general_property": "Biens",
   "html_preview":"Aperçu HTML",
-  "html_code": "Code HTML",
-  "url_qrcode":"Code QR URL",
-  "Notification.isEnabled_setting_name": "Statut de notification",
-  "Notification.isEnabled_setting_description": "Spécifie si la fonction de notification sera activée sur l'application Android"
+  "html_code": "Code HTML"
 }

@@ -154,7 +154,7 @@ public class JsonRegistrationQueueDataHandler implements QueueDataHandler {
 
     private PatientIdentifier getPreferredPatientIdentifierFromPayload(){
         String identifierValue = JsonUtils.readAsString(payload, "$['patient']['patient.medical_record_number']");
-        String identifierTypeName = "AMRS Universal ID";
+        String identifierTypeName = "Patient Identifier";
 
         PatientIdentifier preferredPatientIdentifier = createPatientIdentifier(identifierTypeName, identifierValue);
         if (preferredPatientIdentifier != null) {
