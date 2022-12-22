@@ -146,7 +146,7 @@ public class JsonRegistrationQueueDataHandler implements QueueDataHandler {
         }
 
         //add to patient identifier
-        String identifierValue = JsonUtils.readAsString(payload, "$['patient']['patient.medical_record_number']");
+        String identifierValue = JsonUtils.readAsString(payload, "$['patient']['patient.medical_record_number']['identifier_value']");
         String identifierTypeName = "Patient Identifier";
 
 
