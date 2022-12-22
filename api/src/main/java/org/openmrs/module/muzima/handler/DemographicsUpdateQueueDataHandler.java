@@ -339,7 +339,7 @@ public class DemographicsUpdateQueueDataHandler implements QueueDataHandler {
             //process as legacy demographics update medical record number
             String medicalRecordNumberValueString = (String)medicalRecordNumberObject;
             if(StringUtils.isNotEmpty(medicalRecordNumberValueString)) {
-                String identifierTypeName = "Patient Identifier";
+                String identifierTypeName = "AMRS Universal ID";
                 PatientIdentifier preferredPatientIdentifier = createPatientIdentifier(identifierTypeName, medicalRecordNumberValueString);
                 if (preferredPatientIdentifier != null) {
                     preferredPatientIdentifier.setPreferred(true);

@@ -144,17 +144,35 @@ public class JsonRegistrationQueueDataHandler implements QueueDataHandler {
         if (preferredIdentifier != null) {
             patientIdentifiers.add(preferredIdentifier);
         }
+
+        //add to patient identifier
+        String identifierValue = JsonUtils.readAsString(payload, "$['patient']['patient.medical_record_number']");
+        String identifierTypeName = "Patient Identifier";
+
+
+
+        PatientIdentifier patient_Identifiers = createPatientIdentifier(identifierTypeName, identifierValue);
+        if (patient_Identifiers != null) {
+            patient_Identifiers.setPreferred(true); 
+            patientIdentifiers.add(patient_Identifiers);
+        } else {
+            patient_Identifiers =  null;
+        }
+ 
+
+
         List<PatientIdentifier> otherIdentifiers = getOtherPatientIdentifiersFromPayload();
         if (!otherIdentifiers.isEmpty()) {
             patientIdentifiers.addAll(otherIdentifiers);
         }
+
         setIdentifierTypeLocation(patientIdentifiers);
         unsavedPatient.setIdentifiers(patientIdentifiers);
     }
 
     private PatientIdentifier getPreferredPatientIdentifierFromPayload(){
         String identifierValue = JsonUtils.readAsString(payload, "$['patient']['patient.medical_record_number']");
-        String identifierTypeName = "Patient Identifier";
+        String identifierTypeName = "AMRS Universal ID";
 
         PatientIdentifier preferredPatientIdentifier = createPatientIdentifier(identifierTypeName, identifierValue);
         if (preferredPatientIdentifier != null) {
