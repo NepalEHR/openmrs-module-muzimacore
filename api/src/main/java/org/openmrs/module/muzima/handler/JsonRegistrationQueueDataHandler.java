@@ -69,7 +69,7 @@ public class JsonRegistrationQueueDataHandler implements QueueDataHandler {
 
     @Override
     public void process(final QueueData queueData) throws QueueProcessorException {
-        log.info("Processing registration form data: " + queueData.getUuid());
+        log.error("Processing registration form data: " + queueData.getUuid());
         queueProcessorException = new QueueProcessorException();
         try {
             if (validate(queueData)) {
@@ -79,7 +79,7 @@ public class JsonRegistrationQueueDataHandler implements QueueDataHandler {
             /*Custom exception thrown by the validate function should not be added again into @queueProcessorException.
              It should add the runtime dao Exception while saving the data into @queueProcessorException collection */
             if (!e.getClass().equals(QueueProcessorException.class)) {
-                queueProcessorException.addException(new Exception("Exception while process payload ",e));
+                queueProcessorException.addException(new Exception("Exception while process payload "+ e.toString(),e));
             }
         } finally {
             if (queueProcessorException.anyExceptions()) {
@@ -146,18 +146,17 @@ public class JsonRegistrationQueueDataHandler implements QueueDataHandler {
         }
 
         //add to patient identifier
-        String identifierValue = JsonUtils.readAsString(payload, "$['patient']['patient.medical_record_number']['identifier_value']");
-        String identifierTypeName = "Patient Identifier";
+        // String identifierValue = "COM" +JsonUtils.readAsString(payload, "$['patient']['patient.medical_record_number']['identifier_value']");
+        // String identifierTypeName = "Patient Identifier";
 
 
 
-        PatientIdentifier patient_Identifiers = createPatientIdentifier(identifierTypeName, identifierValue);
-        if (patient_Identifiers != null) {
-            patient_Identifiers.setPreferred(true); 
-            patientIdentifiers.add(patient_Identifiers);
-        } else {
-            patient_Identifiers =  null;
-        }
+        // PatientIdentifier patient_Identifiers = createPatientIdentifier(identifierTypeName, identifierValue);
+        // if (patient_Identifiers != null) { 
+        //     patientIdentifiers.add(patient_Identifiers);
+        // } else {
+        //     patient_Identifiers =  null;
+        // }
  
 
 
@@ -171,7 +170,7 @@ public class JsonRegistrationQueueDataHandler implements QueueDataHandler {
     }
 
     private PatientIdentifier getPreferredPatientIdentifierFromPayload(){
-        String identifierValue = JsonUtils.readAsString(payload, "$['patient']['patient.medical_record_number']");
+        String identifierValue = JsonUtils.readAsString(payload, "$['patient']['patient.medical_record_number']['identifier_value']");
         String identifierTypeName = "AMRS Universal ID";
 
         PatientIdentifier preferredPatientIdentifier = createPatientIdentifier(identifierTypeName, identifierValue);
@@ -187,7 +186,16 @@ public class JsonRegistrationQueueDataHandler implements QueueDataHandler {
         List<PatientIdentifier> otherIdentifiers = new ArrayList<PatientIdentifier>();
         Object identifierTypeNameObject = JsonUtils.readAsObject(payload, "$['observation']['other_identifier_type']");
         Object identifierValueObject = JsonUtils.readAsObject(payload, "$['observation']['other_identifier_value']");
-
+       
+       
+        String identifierValue1 = "COM" +JsonUtils.readAsString(payload, "$['patient']['patient.medical_record_number']['identifier_value']");
+        String identifierTypeName1 = "Patient Identifier";
+        PatientIdentifier identifier1 = createPatientIdentifier(identifierTypeName1,
+        identifierValue1);
+                if (identifier1 != null) {
+                    otherIdentifiers.add(identifier1);
+                }
+        
         if (identifierTypeNameObject instanceof JSONArray) {
             JSONArray identifierTypeName = (JSONArray) identifierTypeNameObject;
             JSONArray identifierValue = (JSONArray) identifierValueObject;
