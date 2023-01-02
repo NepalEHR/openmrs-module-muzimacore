@@ -337,6 +337,9 @@ public class JsonRegistrationQueueDataHandler implements QueueDataHandler {
         String phoneNumber = JsonUtils.readAsString(payload, "$['patient']['patient.phone_number']");
         setAsAttribute("Contact Phone Number",phoneNumber);
 
+        String caste = JsonUtils.readAsString(payload, "$['patient']['patient.comcaste']");
+        setAsAttribute("comcaste",caste);
+
         unsavedPatient.setAttributes(personAttributes);
     }
 

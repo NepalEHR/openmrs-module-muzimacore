@@ -60,7 +60,8 @@ import static org.openmrs.module.muzima.utils.Constants.MuzimaSettings.PATIENT_I
 import static org.openmrs.module.muzima.utils.JsonUtils.getElementFromJsonObject;
 import static org.openmrs.module.muzima.utils.PersonCreationUtils.getPersonAddressFromJsonObject;
 import static org.openmrs.module.muzima.utils.PersonCreationUtils.getPersonAttributeFromJsonObject;
-
+import java.io.FileWriter;  // Import the File class
+import java.io.IOException;  // Import the IOException class to handle errors
 /**
  * TODO: Write brief description about the class here.
  */
@@ -152,6 +153,21 @@ public class JsonGenericRegistrationQueueDataHandler implements QueueDataHandler
                         )
                 );
             }
+        }
+    }
+
+
+    private void addToCustomLog(String inform) { 
+        try
+        {
+            String filename= "/home/muzima/muzimaLog.txt";
+            FileWriter fw = new FileWriter(filename,true); //the true will append the new data
+            fw.write(inform+"\n");//appends the string to the file
+            fw.close();
+        }
+        catch(IOException ioe)
+        {
+            System.err.println("IOException: " + ioe.getMessage());
         }
     }
 
@@ -486,6 +502,7 @@ public class JsonGenericRegistrationQueueDataHandler implements QueueDataHandler
     }
 
     private void setPersonAttributesFromPayload() {
+        addToCustomLog("Inside setPersonAttributesFromPayload");
         Set<PersonAttribute> attributes = new TreeSet<PersonAttribute>();
         try {
             Object patientAttributeObject = JsonUtils.readAsObject(payload, "$['patient']['patient.personattribute']");
@@ -529,9 +546,12 @@ public class JsonGenericRegistrationQueueDataHandler implements QueueDataHandler
                 }
             }
         } catch (InvalidPathException ex) {
+            queueProcessorException.addException(new Exception("Error while parsing person attribute" + ex));
+   
             log.error("Error while parsing person attribute", ex);
         }
-
+        
+        addToCustomLog("Inside setPersonAttributesFromPayload " + attributes.size());
         if(!attributes.isEmpty()) {
             unsavedPatient.setAttributes(attributes);
         }
