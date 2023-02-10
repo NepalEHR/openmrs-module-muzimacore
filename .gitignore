@@ -19,3 +19,4 @@ api/logs/
 # project files
 *.ipr
 *.iws
+/.metadata/

@@ -575,6 +575,7 @@ public class JsonEncounterQueueDataHandler implements QueueDataHandler {
                             visit.setCreator(user);
                             visit.setDateCreated(new Date());
                             visit.setUuid(uuid);
+                            visit.setLocation(location);
                             visitService.saveVisit(visit);
                             encounterVisit = visitService.getVisitByUuid(uuid);
                         } else {

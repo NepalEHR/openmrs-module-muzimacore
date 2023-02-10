@@ -310,17 +310,20 @@ public class JsonRegistrationQueueDataHandler implements QueueDataHandler {
     private void setPatientAddressesFromPayload(){
         PersonAddress patientAddress = new PersonAddress();
 
-        String county = JsonUtils.readAsString(payload, "$['patient']['patient.county']");
-        patientAddress.setStateProvince(county);
-
-        String location = JsonUtils.readAsString(payload, "$['patient']['patient.location']");
-        patientAddress.setAddress6(location);
-
-        String sub_location = JsonUtils.readAsString(payload, "$['patient']['patient.sub_location']");
-        patientAddress.setAddress5(sub_location);
+        String ward = JsonUtils.readAsString(payload, "$['patient']['patient.ward']");
+        patientAddress.setAddress1(ward);
 
         String village = JsonUtils.readAsString(payload, "$['patient']['patient.village']");
         patientAddress.setCityVillage(village);
+
+        String countyDistrict = JsonUtils.readAsString(payload, "$['patient']['patient.countyDistrict']");
+        patientAddress.setCountyDistrict(countyDistrict);
+
+        String stateProvince = JsonUtils.readAsString(payload, "$['patient']['patient.stateProvince']");
+        patientAddress.setStateProvince(stateProvince);
+
+        String country = JsonUtils.readAsString(payload, "$['patient']['patient.country']");
+        patientAddress.setCountry(country);
 
         Set<PersonAddress> addresses = new TreeSet<PersonAddress>();
         addresses.add(patientAddress);
